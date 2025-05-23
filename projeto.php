@@ -1,6 +1,6 @@
 <?php
-    $start = true;
-    //$logged = false;
+    //$start = false;
+    $logged = false;
 
     $users = ["user" => "1234"];
 
@@ -8,11 +8,10 @@
         echo "Sistema de gerenciamento de caixa™\n 1 - Fazer Login\n 2 - Sair\n";
 
         $input = readline();
-
         return $input;
     }
 
-    function login() {
+    function login(&$logged) {
         global $users;
 
         echo "Fazer login\n Nome de usuário:\n";
@@ -23,7 +22,8 @@
 
         for ($i = 0; $i < count($users); $i++) {
             if ($password == $users[$user]) {
-                echo "entrou";
+                echo "Bem vindo $user";
+                $logged = true;
             } 
             else {
                 system("clear");
@@ -33,4 +33,45 @@
         }
     }
 
-    login();
+    function logout(&$logged) {
+        return $logged = false;
+    }
+
+    function menuScreen(&$logged) {
+        system("clear");
+        echo "MENU\n 1 - Vender\n 2 - Criar usuário\n 3 - Verificar log\n 4 - Deslogar\n";
+        $input = readline();
+
+        options($input);
+    }
+
+    function options($option) {
+        global $logged;
+        $option = match ($option) {
+            "1" => "Vender",
+            "2" => "Criar usuário",
+            "3" => "Log",
+            "4" => logout($logged),
+            default => "Opção inválida"
+        };
+    }
+
+    while (!$logged) {
+        echo "DESLOGADO\n";
+        if (startScreen() == "1") {
+            system("clear");
+            //startScreen();
+            login($logged);
+        }
+
+        else {
+            die("Até mais\n");
+        }
+        
+        while ($logged) {
+            echo "LOGADO\n";
+            system("clear");
+            menuScreen($logged);
+        }
+    }
+
