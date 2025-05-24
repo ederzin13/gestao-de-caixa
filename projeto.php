@@ -45,19 +45,34 @@
         options($input);
     }
 
+    function newUser() {
+        global $users;
+
+        system("clear");
+        echo "Cadastrar novo usuário\n Nome: \n";
+        $name = readline();
+
+        echo "Senha:\n";
+        $senha = readline();
+
+        $users[$name] = $senha;
+        echo "Novo usuário cadastrado\n";
+    }
+
     function options($option) {
         global $logged;
         $option = match ($option) {
             "1" => "Vender",
-            "2" => "Criar usuário",
+            "2" => newUser(),
             "3" => "Log",
             "4" => logout($logged),
             default => "Opção inválida"
         };
+
+        return $option;
     }
 
     while (!$logged) {
-        echo "DESLOGADO\n";
         if (startScreen() == "1") {
             system("clear");
             //startScreen();
@@ -69,7 +84,6 @@
         }
         
         while ($logged) {
-            echo "LOGADO\n";
             system("clear");
             menuScreen($logged);
         }
