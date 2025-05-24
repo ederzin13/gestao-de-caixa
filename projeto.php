@@ -3,6 +3,9 @@
     $logged = false;
 
     $users = ["user" => "1234"];
+    $currentUser = "";
+
+    $log = [];
 
     function startScreen() {
         echo "Sistema de gerenciamento de caixa™\n 1 - Fazer Login\n 2 - Sair\n";
@@ -13,6 +16,7 @@
 
     function login(&$logged) {
         global $users;
+        global $currentUser;
 
         echo "Fazer login\n Nome de usuário:\n";
         $user = readline();
@@ -24,6 +28,7 @@
             if ($password == $users[$user]) {
                 echo "Bem vindo $user";
                 $logged = true;
+                $currentUser = $user;
             } 
             else {
                 system("clear");
@@ -45,6 +50,21 @@
         options($input);
     }
 
+    function sale() {
+        global $log;
+        global $currentUser;
+        
+        system("clear");
+        echo "Nova venda\n PRODUTO VENDIDO:\n";
+        $item = readline();
+
+        echo "VALOR DA VENDA:\n";
+        $price = readline();
+
+        $message = "$currentUser realizou uma venda do item $item no valor $price em " . date("d/m/Y H:i:s");
+        $log[] = $message;
+    }
+
     function newUser() {
         global $users;
 
@@ -62,7 +82,7 @@
     function options($option) {
         global $logged;
         $option = match ($option) {
-            "1" => "Vender",
+            "1" => sale(),
             "2" => newUser(),
             "3" => "Log",
             "4" => logout($logged),
