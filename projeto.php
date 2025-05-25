@@ -58,6 +58,9 @@
     }
 
     function menuScreen(&$logged) {
+        global $currentUser;
+
+        echo "Usuário: $currentUser\n";
         echo "MENU\n 1 - Vender\n 2 - Criar usuário\n 3 - Verificar log\n 4 - Deslogar\n 5 - Total das vendas\n";
         $input = readline();
         
@@ -93,6 +96,8 @@
 
         echo "Senha:\n";
         $senha = readline();
+
+        system("clear");
 
         $users[$name] = $senha;
         echo "Novo usuário cadastrado\n";
