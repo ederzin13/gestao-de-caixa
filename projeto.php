@@ -17,6 +17,7 @@
     function login(&$logged) {
         global $users;
         global $currentUser;
+        global $log;
 
         echo "Fazer login\n Nome de usuário:\n";
         $user = readline();
@@ -24,30 +25,42 @@
         echo "Senha: ";
         $password = readline();
 
+        system("clear");
+
         for ($i = 0; $i < count($users); $i++) {
             if ($password == $users[$user]) {
-                echo "Bem vindo $user";
+                echo "Bem vindo $user\n";
                 $logged = true;
                 $currentUser = $user;
+
+                $message = "$currentUser entrou no sistema em " . date("d/m/Y H:i:s\n");
+                $log[] = $message;
             } 
             else {
                 system("clear");
                 echo "Usuário ou senha inválidos\n";
-                startScreen();
             }
         }
     }
 
     function logout(&$logged) {
+        global $log;
+        global $currentUser;
+        
+        $message = "$currentUser saiu do sistema em " . date("d/m/Y H:i:s\n");
+        $log[] = $message;
+
+        system("clear");
+
         return $logged = false;
     }
 
     function menuScreen(&$logged) {
-        system("clear");
         echo "MENU\n 1 - Vender\n 2 - Criar usuário\n 3 - Verificar log\n 4 - Deslogar\n";
         $input = readline();
-
+        
         options($input);
+        //system("clear");
     }
 
     function sale() {
@@ -61,7 +74,9 @@
         echo "VALOR DA VENDA:\n";
         $price = readline();
 
-        $message = "$currentUser realizou uma venda do item $item no valor $price em " . date("d/m/Y H:i:s");
+        system("clear");
+
+        $message = "$currentUser realizou uma venda do item $item no valor $price em " . date("d/m/Y H:i:s\n");
         $log[] = $message;
     }
 
@@ -79,12 +94,24 @@
         echo "Novo usuário cadastrado\n";
     }
 
+    function logView() {
+        global $log;
+        $view = "";
+
+        foreach ($log as $value) {
+            $view .= $value;
+        }
+
+        system("clear");
+        echo $view;
+    }
+
     function options($option) {
         global $logged;
         $option = match ($option) {
             "1" => sale(),
             "2" => newUser(),
-            "3" => "Log",
+            "3" => logView(),
             "4" => logout($logged),
             default => "Opção inválida"
         };
@@ -104,7 +131,7 @@
         }
         
         while ($logged) {
-            system("clear");
+            //system("clear");
             menuScreen($logged);
         }
     }
