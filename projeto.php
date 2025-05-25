@@ -7,6 +7,8 @@
 
     $log = [];
 
+    $totalSales = 0;
+
     function startScreen() {
         echo "Sistema de gerenciamento de caixa™\n 1 - Fazer Login\n 2 - Sair\n";
 
@@ -56,7 +58,7 @@
     }
 
     function menuScreen(&$logged) {
-        echo "MENU\n 1 - Vender\n 2 - Criar usuário\n 3 - Verificar log\n 4 - Deslogar\n";
+        echo "MENU\n 1 - Vender\n 2 - Criar usuário\n 3 - Verificar log\n 4 - Deslogar\n 5 - Total das vendas\n";
         $input = readline();
         
         options($input);
@@ -66,6 +68,7 @@
     function sale() {
         global $log;
         global $currentUser;
+        global $totalSales;
         
         system("clear");
         echo "Nova venda\n PRODUTO VENDIDO:\n";
@@ -78,6 +81,7 @@
 
         $message = "$currentUser realizou uma venda do item $item no valor $price em " . date("d/m/Y H:i:s\n");
         $log[] = $message;
+        $totalSales += $price;
     }
 
     function newUser() {
@@ -106,6 +110,13 @@
         echo $view;
     }
 
+    function totalView() {
+        global $totalSales;
+        system("clear");
+
+        echo "Valor total das vendas: $totalSales\n";
+    }
+
     function options($option) {
         global $logged;
         $option = match ($option) {
@@ -113,6 +124,7 @@
             "2" => newUser(),
             "3" => logView(),
             "4" => logout($logged),
+            "5" => totalView(),
             default => "Opção inválida"
         };
 
