@@ -1,7 +1,7 @@
 <?php
     $logged = false;
 
-    $users = ["user" => "1234"];
+    $users = ["user" => "1234", "eder" => "123"];
     $currentUser = "";
 
     $log = [];
@@ -36,6 +36,7 @@
 
                 $message = "$currentUser entrou no sistema em " . date("d/m/Y H:i:s\n");
                 $log[] = $message;
+                break;
             } 
             else {
                 system("clear");
