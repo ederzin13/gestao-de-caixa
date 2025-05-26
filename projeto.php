@@ -1,5 +1,4 @@
 <?php
-    //$start = false;
     $logged = false;
 
     $users = ["user" => "1234"];
